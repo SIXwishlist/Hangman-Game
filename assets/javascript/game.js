@@ -9,6 +9,8 @@ var Hangman = {
     currentWord: "", //string to contain the current word the user needs to guess
     guessedLetters: [], //array to contain previous wrong choices
     wordDisplay: "", //the display of the letters correctly guessed or yet to be guessed
+    correctGuesses: 0,
+    guessesNeeded: 0,
 
     //sets up the game area and resets all values to default
     prepGame: function() {
@@ -16,9 +18,12 @@ var Hangman = {
         let newWordChoice = Math.floor(Math.random() * wordBank.length);
         console.log(newWordChoice);
         this.currentWord = wordBank[newWordChoice];
+        this.guessesNeeded = this.currentWord.length;
         this.guessesLeft = 12;
         this.guessedLetters = [];
+        this.correctGuesses = 0;
         
+        this.wordDisplay = "";
         for (i = 0; i < this.currentWord.length; i++) {
             this.wordDisplay += "_ ";
         }
@@ -39,6 +44,20 @@ var Hangman = {
         if (!this.guessedLetters.includes(userGuess)) {
 
             if (this.currentWord.includes(userGuess)) {
+                this.guessedLetters.push(userGuess);
+                this.updateLettersHTML();
+
+                //checks how many times the correctly guessed letter is in the current word and increments the number of correct guesses
+                for (let i = 0; i < this.currentWord.length; i ++) {
+                    if (userGuess === this.currentWord.charAt(i)) {
+                        this.correctGuesses++;
+                        console.log(this.correctGuesses);
+                    }
+                }
+
+                //code to update this.wordDisplay goes here
+
+                window.setTimeout(this.checkGameStatus(), 500);
 
             } else {
                 this.guessesLeft--
@@ -75,6 +94,16 @@ var Hangman = {
     },
 
     checkGameStatus() {
+        console.log("check");
+        if (this.guessesLeft === 0) {
+            alert("You've lost. Try again?");
+            this.prepGame();
+        }
+
+        if (this.correctGuesses === this.guessesNeeded && this.correctGuesses != 0) {
+            alert("You've won! Another game?");
+            this.prepGame();
+        }
 
     }
 };
