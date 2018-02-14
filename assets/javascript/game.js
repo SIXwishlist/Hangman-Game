@@ -57,7 +57,7 @@ var Hangman = {
 
                 //code to update this.wordDisplay goes here
 
-                window.setTimeout(this.checkGameStatus(), 500);
+                this.checkGameStatus();
 
             } else {
                 this.guessesLeft--
@@ -94,15 +94,21 @@ var Hangman = {
     },
 
     checkGameStatus() {
-        console.log("check");
+        
         if (this.guessesLeft === 0) {
-            alert("You've lost. Try again?");
-            this.prepGame();
+            console.log("You've lost. Try again?");
+            if (confirm("Play again?")) {
+                window.setTimeout(this.prepGame(), 3000);
+            }
         }
 
         if (this.correctGuesses === this.guessesNeeded && this.correctGuesses != 0) {
-            alert("You've won! Another game?");
-            this.prepGame();
+            console.log("You've won! Another game?");
+            wins++;
+            if (confirm("Play again?")) {
+                console.log("condition hit");
+                window.setTimeout(this.prepGame(), 3000);
+            }
         }
 
     }
