@@ -1,14 +1,13 @@
 
 var wins = 0; //number of won games
-var wordBank = ["kyle", "lunch"]; //array containing all possible word choices for the user to guess against
-console.log("First log")
+var wordBank = ["kyle", "pizza"]; //array containing all possible word choices for the user to guess against
 
 var Hangman = {
 
     guessesLeft: 12, //number of wrong guesses before user loses
     currentWord: "", //string to contain the current word the user needs to guess
     guessedLetters: [], //array to contain previous wrong choices
-    wordDisplay: "", //the display of the letters correctly guessed or yet to be guessed
+    wordDisplay: [], //the display of the letters correctly guessed or yet to be guessed
     correctGuesses: 0,
     guessesNeeded: 0,
 
@@ -17,22 +16,24 @@ var Hangman = {
         console.log("game prep");
         let newWordChoice = Math.floor(Math.random() * wordBank.length);
         console.log(newWordChoice);
-        this.currentWord = wordBank[newWordChoice];
-        this.guessesNeeded = this.currentWord.length;
-        this.guessesLeft = 12;
-        this.guessedLetters = [];
-        this.correctGuesses = 0;
+        Hangman.currentWord = wordBank[newWordChoice];
+        Hangman.guessesNeeded = Hangman.currentWord.length;
+        Hangman.guessesLeft = 12;
+        Hangman.guessedLetters = [];
+        Hangman.wordDisplay = [];
+        Hangman.correctGuesses = 0;
         
-        this.wordDisplay = "";
-        for (i = 0; i < this.currentWord.length; i++) {
-            this.wordDisplay += "_ ";
+        
+        for (i = 0; i < Hangman.currentWord.length; i++) {
+            Hangman.wordDisplay.push("_");
+            Hangman.wordDisplay.push(" ");
         }
 
         //calls functions to update displayed values on document
-        this.updateWordHTML();
-        this.updateGuessHTML();
-        this.updateLettersHTML();
-        this.updateWinsHTML();
+        Hangman.updateWordHTML();
+        Hangman.updateGuessHTML();
+        Hangman.updateLettersHTML();
+        Hangman.updateWinsHTML();
     },
 
     //gets passed event.key of keyup function
@@ -41,81 +42,115 @@ var Hangman = {
         let userGuess = guess.toLowerCase();
 
         //checks if letter has been guessed already, then if its in the current word or not
-        if (!this.guessedLetters.includes(userGuess)) {
+        if (!Hangman.guessedLetters.includes(userGuess)) {
 
-            if (this.currentWord.includes(userGuess)) {
-                this.guessedLetters.push(userGuess);
-                this.updateLettersHTML();
-
+            if (Hangman.currentWord.includes(userGuess)) {
+                Hangman.guessedLetters.push(userGuess);
+                Hangman.updateLettersHTML();
+                
                 //checks how many times the correctly guessed letter is in the current word and increments the number of correct guesses
-                for (let i = 0; i < this.currentWord.length; i ++) {
+                for (let i = 0; i < Hangman.currentWord.length; i ++) {
                     if (userGuess === this.currentWord.charAt(i)) {
-                        this.correctGuesses++;
-                        console.log(this.correctGuesses);
+                        Hangman.correctGuesses++;
+                        
+                        //getes the proper index in the array that is displayed to the player and replaces underscore with guessed letter
+                        if (i != 0) {
+                            let displayIndex = i * 2;
+                            Hangman.wordDisplay[displayIndex] = Hangman.currentWord[i];
+                            Hangman.updateWordHTML();
+                        } else {
+                            Hangman.wordDisplay[0] = Hangman.currentWord[i];
+                            Hangman.updateWordHTML();
+                        }
+                        
                     }
                 }
 
-                //code to update this.wordDisplay goes here
+                Hangman.checkGameStatus();
 
-                this.checkGameStatus();
-
+            //if guess was not correct, decrements remaining guesses and adds incorrect letter to array of previous guesses
             } else {
-                this.guessesLeft--
-                this.updateGuessHTML();
-                this.guessedLetters.push(userGuess);
-                this.updateLettersHTML();
-                this.checkGameStatus();
+                Hangman.guessesLeft--
+                Hangman.updateGuessHTML();
+                Hangman.guessedLetters.push(userGuess);
+                Hangman.updateLettersHTML();
+                Hangman.checkGameStatus();
             }
 
         }
         
     },
 
+    //updates game HTML to show current state of word to be guessed against
     updateWordHTML: function() {
-        document.getElementById('wordDisplay').textContent = this.wordDisplay;
+
+        document.getElementById('wordDisplay').textContent = " ";
+        Hangman.wordDisplay.forEach(function(element) {
+            document.getElementById('wordDisplay').textContent += element;
+        });
+
     },
 
+    //updates game HTML to show how many guesses remain
     updateGuessHTML: function() {
-        document.getElementById('guesses').textContent = this.guessesLeft;
+
+        document.getElementById('guesses').textContent = Hangman.guessesLeft;
     },
 
+    //updates game HTML to show which letters have already been guessed
     updateLettersHTML: function() {
 
         let guessedLetterOutput = "";
 
-        for (let i = 0; i < this.guessedLetters.length; i ++) {
-            guessedLetterOutput += this.guessedLetters[i] + " ";
+        for (let i = 0; i < Hangman.guessedLetters.length; i ++) {
+            guessedLetterOutput += Hangman.guessedLetters[i] + " ";
         }
         document.getElementById('lettersGuessed').textContent = guessedLetterOutput;
     },
 
+    //updates game HTML to show how many wins player has achieved on current run
     updateWinsHTML: function() {
         document.getElementById('wins').textContent = "Wins: " + wins;
     },
 
+    //called after game has finished processing user guess, checks if player has run out of guesses or gotten all letters correct
     checkGameStatus() {
         
-        if (this.guessesLeft === 0) {
-            console.log("You've lost. Try again?");
-            if (confirm("Play again?")) {
-                window.setTimeout(this.prepGame(), 3000);
+        if (Hangman.guessesLeft === 0) {
+            let playAgain = false;
+            playAgain = setTimeout(Hangman.playAgainLoss, 500);
+            if (playAgain) {
+                setTimeout(Hangman.prepGame, 1000);
             }
         }
 
-        if (this.correctGuesses === this.guessesNeeded && this.correctGuesses != 0) {
-            console.log("You've won! Another game?");
+        if (Hangman.correctGuesses === Hangman.guessesNeeded && Hangman.correctGuesses != 0) {
+            console.log("win check");
             wins++;
-            if (confirm("Play again?")) {
-                console.log("condition hit");
-                window.setTimeout(this.prepGame(), 3000);
+            let playAgain = false;
+            playAgain = setTimeout(Hangman.playAgainWin, 500);
+            console.log(playAgain);
+            if (playAgain) {
+                console.log("should start again");
+                setTimeout(Hangman.prepGame, 1000);
             }
         }
 
+    },
+
+    //functions necessary to avoid setTimeout weirdness and to ensure game doesn't restart too quickly
+    playAgainWin() {
+        alert("You won! The fun never ends.");
+        return true;
+    },
+
+    playAgainLoss() {
+        alert("You lost! Try again.");
+        return true;
     }
 };
 
 window.onload = function(event) {
-    console.log("Second log");
     Hangman.prepGame();
 };
 
