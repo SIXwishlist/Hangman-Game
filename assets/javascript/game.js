@@ -1,7 +1,7 @@
 
 var wins = 0; //number of won games
 var wordBank = ["pain", "grenouille", "chat", "chien", "vache", "vin", "paris", "marseille", "bordeaux", "lyon",  //array containing all possible word choices for the user to guess against
-                "lapin", "pomme", "nantes", "baguette", "fromage", "arbre", "cigarette", "tabac", "quotidienne", "fin"];
+                "lapin", "pomme", "nantes", "baguette", "fromage", "arbre", "cigarette", "tabac", "quotidienne", "fin", "guillotine"];
 var marseillaise = new Audio("../Hangman-Game/assets/sounds/marsshort.mp3");                                                                 
 
 var Hangman = {
