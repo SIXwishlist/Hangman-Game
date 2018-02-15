@@ -1,5 +1,44 @@
 body {
-    background-color: black;
-    color: green;
-    font-family: monospace;
+    background-color: white;
+    background-image: url('../images/background.jpg');
+    font-family: 'Dancing Script', cursive;
+}
+
+.blue {
+    background-color: rgb(8,8,99);
+    height: 5vh;
+}
+
+.white {
+    background-color: white;
+}
+
+.red {
+    background-color: rgb(214, 8, 24);
+    height: 5vh;
+}
+
+.flagBorder {
+    border: 1px solid gray;
+}
+
+.centerAlign {
+    text-align: center;
+}
+
+.marginTopandBottom{
+    margin-bottom: 5vh;
+    margin-top: 5vh;
+}
+
+.padding {
+    padding: 5vh 0 5vh 0;
+}
+
+.gameArea {
+    background-color: rgba(238, 235, 235, 0.8);
+}
+
+#opaque {
+    opacity: 1;
 }
