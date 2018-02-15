@@ -1,6 +1,8 @@
 
 var wins = 0; //number of won games
-var wordBank = ["kyle", "pizza"]; //array containing all possible word choices for the user to guess against
+var wordBank = ["pain", "grenouille", "chat", "chien", "vache", "vin", "paris", "marseille", "bordeaux", "lyon",  //array containing all possible word choices for the user to guess against
+                "lapin", "pomme", "nantes", "baguette", "fromage", "arbre", "cigarette", "tabac", "quotidienne", "fin"];
+var marseillaise = new Audio("../Hangman-Game/assets/sounds/marsshort.mp3");                                                                 
 
 var Hangman = {
 
@@ -23,7 +25,7 @@ var Hangman = {
         Hangman.wordDisplay = [];
         Hangman.correctGuesses = 0;
         
-        
+        //converts word selected to underscores and spaces
         for (i = 0; i < Hangman.currentWord.length; i++) {
             Hangman.wordDisplay.push("_");
             Hangman.wordDisplay.push(" ");
@@ -140,12 +142,13 @@ var Hangman = {
 
     //functions necessary to avoid setTimeout weirdness and to ensure game doesn't restart too quickly
     playAgainWin() {
-        alert("You won! The fun never ends.");
+        marseillaise.play();
+        alert("Vous avez gagné! Encore?");
         return true;
     },
 
     playAgainLoss() {
-        alert("You lost! Try again.");
+        alert("Vous avez perdu! Essayez encore.");
         return true;
     }
 };

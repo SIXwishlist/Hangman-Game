@@ -42,3 +42,7 @@ body {
 #opaque {
     opacity: 1;
 }
+
+.gameBorder {
+    border: 1px solid rgb(219, 218, 218);
+}
