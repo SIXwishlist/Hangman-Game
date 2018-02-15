@@ -40,9 +40,9 @@ var Hangman = {
     compareGuess: function(guess) {
         
         let userGuess = guess.toLowerCase();
-
+        console.log(userGuess.charCodeAt(0));
         //checks if letter has been guessed already, then if its in the current word or not
-        if (!Hangman.guessedLetters.includes(userGuess)) {
+        if (!Hangman.guessedLetters.includes(userGuess) && (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
 
             if (Hangman.currentWord.includes(userGuess)) {
                 Hangman.guessedLetters.push(userGuess);
@@ -154,6 +154,6 @@ window.onload = function(event) {
     Hangman.prepGame();
 };
 
-document.onkeyup = function(event) {
+document.onkeypress = function(event) {
     Hangman.compareGuess(event.key);
 };
