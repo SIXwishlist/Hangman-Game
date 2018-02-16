@@ -1,7 +1,7 @@
 
 var wins = 0; //number of won games
 var wordBank = ["pain", "grenouille", "chat", "chien", "vache", "vin", "paris", "marseille", "bordeaux", "lyon",  //array containing all possible word choices for the user to guess against
-                "lapin", "pomme", "nantes", "baguette", "fromage", "arbre", "cigarette", "tabac", "quotidienne", "fin", "guillotine"];
+                "lapin", "pomme", "nantes", "baguette", "fromage", "arbre", "cigarette", "tabac", "quotidienne", "fin", "guillotine",];
 var marseillaise = new Audio("../Hangman-Game/assets/sounds/marsshort.mp3");                                                                 
 
 var Hangman = {
@@ -15,9 +15,7 @@ var Hangman = {
 
     //sets up the game area and resets all values to default
     prepGame: function() {
-        console.log("game prep");
         let newWordChoice = Math.floor(Math.random() * wordBank.length);
-        console.log(newWordChoice);
         Hangman.currentWord = wordBank[newWordChoice];
         Hangman.guessesNeeded = Hangman.currentWord.length;
         Hangman.guessesLeft = 12;
@@ -42,7 +40,6 @@ var Hangman = {
     compareGuess: function(guess) {
         
         let userGuess = guess.toLowerCase();
-        console.log(userGuess.charCodeAt(0));
         //checks if letter has been guessed already, then if its in the current word or not
         if (!Hangman.guessedLetters.includes(userGuess) && (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122)) {
 
@@ -127,13 +124,10 @@ var Hangman = {
         }
 
         if (Hangman.correctGuesses === Hangman.guessesNeeded && Hangman.correctGuesses != 0) {
-            console.log("win check");
             wins++;
             let playAgain = false;
             playAgain = setTimeout(Hangman.playAgainWin, 500);
-            console.log(playAgain);
             if (playAgain) {
-                console.log("should start again");
                 setTimeout(Hangman.prepGame, 1000);
             }
         }
